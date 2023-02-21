@@ -1,0 +1,15 @@
+SELECT Transaction_Date, Actual_Cost
+       , SUM(ACTUAL_COST) OVER(ORDER BY transaction_date
+          ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)
+          AS ACTUAL_COST_DATE
+FROM PTBL_TRANSACTION
+ORDER BY Transaction_Date;
+
+SELECT Transaction_Date, Actual_Cost
+       , SUM(ACTUAL_COST) OVER(
+         PARTITION BY TO_CHAR(transaction_date,'YYMM')
+         ORDER BY transaction_date
+         ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING)
+         AS ACTUAL_COST_MONTH_TO_DATE
+FROM PTBL_TRANSACTION
+ORDER BY Transaction_Date;
